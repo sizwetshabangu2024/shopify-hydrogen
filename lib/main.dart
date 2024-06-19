@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:shopify_flutter/shopify_flutter.dart';
+import 'pages/cart.dart'; // Import the cart page
 
 void main() {
   ShopifyConfig.setConfig(
@@ -42,11 +43,6 @@ class MyHomePage extends StatefulWidget {
 class _MyHomePageState extends State<MyHomePage> {
   int _counter = 0;
 
-  void _goToCart() {
-    Navigator.push(
-      context,
-      MaterialPageRoute(builder: (context) => CheckoutCartPage()),
-    );
   List<Product> products = [];
   ShopifyStore shopifyStore = ShopifyStore.instance;
 
@@ -63,15 +59,11 @@ class _MyHomePageState extends State<MyHomePage> {
     });
   }
 
-  void _incrementCounter() {
-    setState(() {
-      // This call to setState tells the Flutter framework that something has
-      // changed in this State, which causes it to rerun the build method below
-      // so that the display can reflect the updated values. If we changed
-      // _counter without calling setState(), then the build method would not be
-      // called again, and so nothing would appear to happen.
-      _counter++;
-    });
+  void _goToCart() {
+    Navigator.push(
+      context,
+      MaterialPageRoute(builder: (context) => CheckoutCartPage()),
+    );
   }
 
   @override
