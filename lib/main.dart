@@ -67,6 +67,22 @@ class MyHomePage extends StatefulWidget {
 class _MyHomePageState extends State<MyHomePage> {
   int _counter = 0;
 
+  List<Product> products = [];
+  ShopifyStore shopifyStore = ShopifyStore.instance;
+
+  @override
+  void initState() {
+    super.initState();
+    _getProducts();
+  }
+
+  void _getProducts() async {
+    var results = await shopifyStore.getAllProducts();
+    setState(() {
+      products = results;
+    });
+  }
+
   void _incrementCounter() {
     setState(() {
       // This call to setState tells the Flutter framework that something has
@@ -115,8 +131,8 @@ class _MyHomePageState extends State<MyHomePage> {
           // wireframe for each widget.
           mainAxisAlignment: MainAxisAlignment.center,
           children: <Widget>[
-            const Text(
-              'You have pushed the button this many times:',
+            Text(
+              products.toString(),
             ),
             Text(
               '$_counter',
