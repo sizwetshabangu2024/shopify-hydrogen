@@ -2,6 +2,7 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:shopify_flutter/models/models.dart';
 import 'package:shopify_flutter/shopify/shopify.dart';
+import 'package:shopify_hydrogen/pages/product.dart';
 import 'package:shopify_hydrogen/widgets/related_product_card.dart';
 
 class RelatedProductsWidget extends StatelessWidget {
@@ -53,9 +54,12 @@ class RelatedProductsWidget extends StatelessWidget {
                   if( listEquals(relatedProductCollections, productCollections)){}
                   return Padding(
                     padding: const EdgeInsets.only(right: 16.0),
-                    child: RelatedProductCardWidget(
-                        relatedProduct: relatedProduct),
-                  );
+                    child:   GestureDetector(
+                      onTap: (){
+                        Navigator.push(context, MaterialPageRoute(builder: (context)=> ProductPage(product: relatedProduct)));
+                      },
+                      child: RelatedProductCardWidget(relatedProduct: relatedProduct,),
+                    ));
                 }).toList(),
               ),
             );
