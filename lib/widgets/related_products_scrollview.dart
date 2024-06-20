@@ -2,7 +2,7 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:shopify_flutter/models/models.dart';
 import 'package:shopify_flutter/shopify/shopify.dart';
-import 'package:shopify_hydrogen/widgets/related_product_card_widget.dart';
+import 'package:shopify_hydrogen/widgets/related_product_card.dart';
 
 class RelatedProductsWidget extends StatelessWidget {
   const RelatedProductsWidget({super.key, required this.productTitle, required this.productCollections});

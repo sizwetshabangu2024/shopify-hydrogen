@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:shopify_flutter/models/models.dart';
-import 'package:shopify_hydrogen/widgets/product_card_widget.dart';
-import 'package:shopify_hydrogen/widgets/related_products_widget.dart';
+import 'package:shopify_hydrogen/widgets/product_card.dart';
+import 'package:shopify_hydrogen/widgets/related_products_scrollview.dart';
 
 class ProductPage extends StatelessWidget {
   const ProductPage({super.key, required this.product});
