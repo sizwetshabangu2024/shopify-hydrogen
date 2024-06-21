@@ -1,6 +1,11 @@
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 import 'package:shopify_flutter/shopify_flutter.dart';
-import 'pages/cart.dart'; // Import the cart page
+import 'package:shopify_hydrogen/pages/cart_screen.dart';
+import 'package:shopify_hydrogen/pages/home_screen.dart';
+import 'package:shopify_hydrogen/pages/order_confirmation_screen.dart';
+import 'package:shopify_hydrogen/pages/success_screen.dart';
+import './providers/shopify_provider.dart';
 
 void main() {
   ShopifyConfig.setConfig(
@@ -20,69 +25,19 @@ class MyApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
-      title: 'Shopify Hydrogen',
-      theme: ThemeData(
-        colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
-        useMaterial3: true,
-      ),
-      home: const MyHomePage(title: 'Welcome to Shopify hydrogen'),
-    );
-  }
-}
-
-class MyHomePage extends StatefulWidget {
-  const MyHomePage({super.key, required this.title});
-
-  final String title;
-
-  @override
-  State<MyHomePage> createState() => _MyHomePageState();
-}
-
-class _MyHomePageState extends State<MyHomePage> {
-  int _counter = 0;
-
-  List<Product> products = [];
-  ShopifyStore shopifyStore = ShopifyStore.instance;
-
-  @override
-  void initState() {
-    super.initState();
-    _getProducts();
-  }
-
-  void _getProducts() async {
-    var results = await shopifyStore.getAllProducts();
-    setState(() {
-      products = results;
-    });
-  }
-
-  void _goToCart() {
-    Navigator.push(
-      context,
-      MaterialPageRoute(builder: (context) => CheckoutCartPage()),
-    );
-  }
-
-  @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        backgroundColor: Theme.of(context).colorScheme.inversePrimary,
-        title: Text(widget.title),
-      ),
-      body: Center(
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: <Widget>[
-            ElevatedButton(
-              onPressed: _goToCart,
-              child: const Text('Go to Cart'),
-            ),
-          ],
+    return ChangeNotifierProvider(
+      create: (context) => ShopifyProvider(),
+      child: MaterialApp(
+        title: 'Shopify Hydrogen',
+        theme: ThemeData(
+          primarySwatch: Colors.blue,
         ),
+        home: const HomeScreen(),
+        routes: {
+          '/cart': (context) => const CartScreen(),
+          '/success': (context) => const SuccessScreen(),
+          '/order-confirmation': (context) => const OrderConfirmationScreen(),
+        },
       ),
     );
   }
