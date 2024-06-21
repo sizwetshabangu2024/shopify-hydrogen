@@ -23,7 +23,7 @@ class HomeScreen extends StatelessWidget {
         ],
       ),
       body: FutureBuilder(
-        future: shopifyProvider.fetchProducts(),
+        future: shopifyProvider.fetchAllProducts(),
         builder: (ctx, snapshot) {
           if (snapshot.connectionState == ConnectionState.waiting) {
             print('Waiting for products...');

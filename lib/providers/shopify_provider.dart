@@ -6,18 +6,21 @@ import '../models/product_model.dart';
 import '../models/cart.dart';
 
 class ShopifyProvider with ChangeNotifier {
-  final String _storefrontApiUrl = 'https://quickstart-b7d1dbcd.myshopify.com/api/2023-07/graphql.json';
+  final String _storefrontApiUrl = 'https://quickstart-b7d1dbcd.myshopify.com/api/2023-07/graphql.json'; // Ensure the URL is correct
   final String _accessToken = '16078089379d9bc48515ab671a39bbc3';
 
   List<ProductModel> _products = [];
-  final List<CartItem> _cart = [];
+  List<CartItem> _cart = [];
 
   List<ProductModel> get products => _products;
   List<CartItem> get cart => _cart;
 
-  Future<void> fetchProducts() async {
-    print('Fetching products...');
-    try {
+  Future<void> fetchAllProducts() async {
+    print('Fetching all products...');
+    String? endCursor;
+    bool hasNextPage = true;
+
+    while (hasNextPage) {
       final response = await http.post(
         Uri.parse(_storefrontApiUrl),
         headers: {
@@ -27,7 +30,7 @@ class ShopifyProvider with ChangeNotifier {
         body: json.encode({
           'query': '''
           {
-            products(first: ) {
+            products(first: 50, after: ${endCursor != null ? '"$endCursor"' : 'null'}) {
               edges {
                 node {
                   id
@@ -52,9 +55,13 @@ class ShopifyProvider with ChangeNotifier {
                   }
                 }
               }
+              pageInfo {
+                hasNextPage
+                endCursor
+              }
             }
           }
-        '''
+          '''
         }),
       );
 
@@ -62,22 +69,28 @@ class ShopifyProvider with ChangeNotifier {
       print('Response body: ${response.body}');
 
       if (response.statusCode == 200) {
-        print('Products fetched successfully');
         final Map<String, dynamic> responseData = json.decode(response.body);
-        final List<ProductModel> loadedProducts = [];
-        responseData['data']['products']['edges'].forEach((productData) {
-          loadedProducts.add(ProductModel.fromJson(productData['node']));
-        });
-        _products = loadedProducts;
-        print('Products loaded: ${_products.length}');
+        final productsData = responseData['data']['products'];
+
+        if (productsData != null) {
+          productsData['edges'].forEach((productData) {
+            _products.add(ProductModel.fromJson(productData['node']));
+          });
+
+          hasNextPage = productsData['pageInfo']['hasNextPage'];
+          endCursor = productsData['pageInfo']['endCursor'];
+        } else {
+          hasNextPage = false;
+        }
+
         notifyListeners();
       } else {
         print('Failed to fetch products: ${response.statusCode}');
         print('Response body: ${response.body}');
+        break;
       }
-    } catch (e) {
-      print('Error fetching products: $e');
     }
+    print('Total products loaded: ${_products.length}');
   }
 
   void addToCart(ProductModel product) {
