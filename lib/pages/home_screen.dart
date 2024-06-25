@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-
 import '../providers/shopify_provider.dart';
+import '../models/cart.dart';
 
 class HomeScreen extends StatelessWidget {
   const HomeScreen({super.key});
@@ -12,15 +12,33 @@ class HomeScreen extends StatelessWidget {
 
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Snowboard Store'),
-        actions: [
-          IconButton(
-            icon: const Icon(Icons.shopping_cart),
-            onPressed: () {
-              Navigator.pushNamed(context, '/cart');
-            },
-          ),
-        ],
+        title: Row(
+          children: [
+            const Text('Dariel Swag Shop'),
+            Expanded(child: Container()), // to push the cart button to the center if needed
+            Consumer<ShopifyProvider>(
+              builder: (ctx, shopifyProvider, _) {
+                if (shopifyProvider.cart.isNotEmpty) {
+                  return Row(
+                    mainAxisSize: MainAxisSize.min,
+                    children: [
+                      TextButton.icon(
+                        icon: const Icon(Icons.shopping_cart),
+                        label: const Text('Go to cart'),
+                        onPressed: () {
+                          Navigator.pushNamed(context, '/cart');
+                        },
+                      ),
+                    ],
+                  );
+                } else {
+                  return Container(); // an empty container if the cart is empty
+                }
+              },
+            ),
+            Expanded(child: Container()), // to balance the Row
+          ],
+        ),
       ),
       body: FutureBuilder(
         future: shopifyProvider.fetchAllProducts(),
@@ -42,17 +60,48 @@ class HomeScreen extends StatelessWidget {
                     itemCount: shopifyProvider.products.length,
                     itemBuilder: (ctx, i) {
                       final product = shopifyProvider.products[i];
+                      final cartItem = shopifyProvider.cart.firstWhere(
+                            (item) => item.product.id == product.id,
+                        orElse: () => CartItem(product: product, quantity: 0),
+                      );
+                      final int quantity = cartItem.quantity;
+
                       return ListTile(
                         title: Text(product.title),
                         subtitle: Text('${product.currencyCode} ${product.price.toStringAsFixed(2)}'),
                         leading: product.imageUrl.isNotEmpty
                             ? Image.network(product.imageUrl)
                             : null,
-                        trailing: IconButton(
-                          icon: const Icon(Icons.add_shopping_cart),
-                          onPressed: () {
-                            shopifyProvider.addToCart(product);
-                          },
+                        trailing: Row(
+                          mainAxisSize: MainAxisSize.min,
+                          children: [
+                            if (quantity > 0)
+                              IconButton(
+                                icon: const Icon(Icons.delete),
+                                onPressed: () {
+                                  shopifyProvider.removeFromCart(product.id);
+                                },
+                              ),
+                            if (quantity > 0)
+                              IconButton(
+                                icon: const Icon(Icons.remove),
+                                onPressed: () {
+                                  if (quantity > 1) {
+                                    shopifyProvider.updateQuantity(product.id, quantity - 1);
+                                  } else {
+                                    shopifyProvider.removeFromCart(product.id);
+                                  }
+                                },
+                              ),
+                            if (quantity > 0)
+                              Text('$quantity'),
+                            IconButton(
+                              icon: const Icon(Icons.add),
+                              onPressed: () {
+                                shopifyProvider.addToCart(product);
+                              },
+                            ),
+                          ],
                         ),
                       );
                     },
