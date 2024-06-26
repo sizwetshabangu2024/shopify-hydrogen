@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:shopify_flutter/models/models.dart';
 import 'package:shopify_hydrogen/models/product_model.dart';
+import 'package:shopify_hydrogen/pages/cart_screen.dart';
 import '../providers/shopify_provider.dart';
 
 class SingleProductCardWidget extends StatelessWidget {
@@ -81,6 +82,15 @@ class SingleProductCardWidget extends StatelessWidget {
                 child: ElevatedButton(
                   onPressed: () {
                     shopifyProvider.addToCart(ProductModel.fromProduct(product));
+                    ScaffoldMessenger.of(context).showSnackBar(
+                      const SnackBar(
+                        content: Text('Product added to cart!'),
+                        elevation: 100,
+                        duration: Duration(
+                          seconds: 1
+                        ),
+                      ),
+                    );
                   },
                   style: ElevatedButton.styleFrom(
                     backgroundColor: Colors.black,
@@ -94,6 +104,39 @@ class SingleProductCardWidget extends StatelessWidget {
                       fontSize: 18,
                       color: Colors.white,
                     ),
+
+                  ),
+                ),
+              ),
+            ),
+            const SizedBox(height: 16.0),
+            Center(
+              child: SizedBox(
+                width: double.infinity,
+                height: 50,
+                child: ElevatedButton(
+                  onPressed: () {
+                    shopifyProvider.addToCart(ProductModel.fromProduct(product));
+                    Navigator.push(context, MaterialPageRoute(builder: (context) => const CartScreen()));
+                  },
+                  style: ElevatedButton.styleFrom(
+                    //backgroundColor: Colors.transparent,
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(5.0),
+                      side: const BorderSide(
+                        style: BorderStyle.solid,
+                        color: Colors.black,
+                        width: 2
+                      ),
+                    ),
+                  ),
+                  child: const Text(
+                    'Checkout',
+                    style: TextStyle(
+                      fontSize: 18,
+                      color: Colors.black,
+                    ),
+
                   ),
                 ),
               ),

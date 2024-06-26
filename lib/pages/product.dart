@@ -18,14 +18,7 @@ class ProductPage extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        iconTheme: const IconThemeData(
-          color: Colors.white
-        ),
         title: Text(productTitle),
-        titleTextStyle: const TextStyle(
-          color: Colors.white
-        ),
-        backgroundColor: Colors.black,
       ),
       body: FutureBuilder(
         future: fetchProducts(),

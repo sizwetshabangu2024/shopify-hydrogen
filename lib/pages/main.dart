@@ -48,7 +48,7 @@ class MainPageState extends State<MainPage> {
           child: BackdropFilter(
             filter: ImageFilter.blur(sigmaX: 10, sigmaY: 10),
             child: BottomNavigationBar(
-              items: <BottomNavigationBarItem>[
+              items: <BottomNavigationBarItem>[//TODO: Add Order page
                 const BottomNavigationBarItem(
                   icon: Icon(Icons.shopping_bag),
                   backgroundColor: Colors.black,
@@ -64,7 +64,30 @@ class MainPageState extends State<MainPage> {
                       if (shopifyProvider.cart.isEmpty) {
                         return const Icon(Icons.shopping_cart_outlined);
                       } else {
-                        return const Icon(Icons.shopping_cart);
+                        return  Stack(
+                          children: [
+                            const Icon(Icons.shopping_cart),
+                            Positioned(child: Container(
+                              padding: const EdgeInsets.all(3),
+                              decoration: BoxDecoration(
+                                color: Colors.red,
+                                borderRadius: BorderRadius.circular(10),
+                              ),
+                              constraints: const BoxConstraints(
+                                minWidth: 10,
+                                minHeight: 10
+                              ),
+                              child: Text(
+                                shopifyProvider.cart.fold(0, (sum, item)=> sum + item.quantity).toString(),
+                                style: const  TextStyle(
+                                  color: Colors.white,
+                                  fontSize: 15,
+                                ),
+                              ),
+                              )
+                            )
+                          ],
+                        );
                       }
                     },
                   ),
