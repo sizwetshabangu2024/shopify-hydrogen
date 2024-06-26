@@ -1,8 +1,10 @@
 import 'package:flutter/material.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 import 'package:provider/provider.dart';
 import 'package:shopify_flutter/models/models.dart';
 import 'package:shopify_hydrogen/models/product_model.dart';
 import 'package:shopify_hydrogen/pages/cart_screen.dart';
+import 'package:shopify_hydrogen/widgets/product_image_scrollview.dart';
 import '../providers/shopify_provider.dart';
 
 class SingleProductCardWidget extends StatelessWidget {
@@ -34,16 +36,8 @@ class SingleProductCardWidget extends StatelessWidget {
                     ),
                   ],
                 ),
-                child: ClipRRect(
-                  borderRadius: BorderRadius.circular(5.0),
-                  child: Image.network(
-                    product.image,
-                    width: 300,
-                    height: 400,
-                    fit: BoxFit.cover,
-                  ),
-                ),
-              ),
+                child: ProductImageScrollview(images: product.images),
+              )
             ),
             const SizedBox(height: 16.0),
             ListTile(
@@ -82,14 +76,11 @@ class SingleProductCardWidget extends StatelessWidget {
                 child: ElevatedButton(
                   onPressed: () {
                     shopifyProvider.addToCart(ProductModel.fromProduct(product));
-                    ScaffoldMessenger.of(context).showSnackBar(
-                      const SnackBar(
-                        content: Text('Product added to cart!'),
-                        elevation: 100,
-                        duration: Duration(
-                          seconds: 1
-                        ),
-                      ),
+                        Fluttertoast.showToast(
+                          msg: "Added to cart ",
+                          toastLength: Toast.LENGTH_SHORT,
+                          gravity: ToastGravity.BOTTOM,
+                          timeInSecForIosWeb: 1,
                     );
                   },
                   style: ElevatedButton.styleFrom(
