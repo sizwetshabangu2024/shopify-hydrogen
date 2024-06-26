@@ -1,5 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 import 'package:shopify_flutter/models/models.dart';
+import 'package:shopify_hydrogen/models/product_model.dart';
+import '../providers/shopify_provider.dart';
 
 class SingleProductCardWidget extends StatelessWidget {
   const SingleProductCardWidget({super.key, required this.product});
@@ -8,6 +11,7 @@ class SingleProductCardWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final shopifyProvider = Provider.of<ShopifyProvider>(context, listen: false);
     return Card(
       elevation: 5,
       shape: RoundedRectangleBorder(
@@ -76,12 +80,7 @@ class SingleProductCardWidget extends StatelessWidget {
                 height: 50,
                 child: ElevatedButton(
                   onPressed: () {
-                    // Add to cart functionality
-                    ScaffoldMessenger.of(context).showSnackBar(
-                      const SnackBar(
-                        content: Text('Product added to cart!'),
-                      ),
-                    );
+                    shopifyProvider.addToCart(product as ProductModel);
                   },
                   style: ElevatedButton.styleFrom(
                     backgroundColor: Colors.black,

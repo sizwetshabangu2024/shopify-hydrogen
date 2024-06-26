@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import '../providers/shopify_provider.dart';
+import 'package:shopify_hydrogen/pages/product.dart';
+
 import '../models/cart.dart';
+import '../providers/shopify_provider.dart';
 
 class HomeScreen extends StatelessWidget {
   const HomeScreen({super.key});
@@ -68,6 +70,11 @@ class HomeScreen extends StatelessWidget {
 
                       return ListTile(
                         title: Text(product.title),
+                        onTap: (){
+                          List<String> productIds = [];
+                          productIds.add(product.id);
+                          Navigator.push(context, MaterialPageRoute(builder: (context)=> ProductPage(productId: productIds)));
+                        },
                         subtitle: Text('${product.currencyCode} ${product.price.toStringAsFixed(2)}'),
                         leading: product.imageUrl.isNotEmpty
                             ? Image.network(product.imageUrl)

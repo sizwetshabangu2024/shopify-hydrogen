@@ -56,7 +56,9 @@ class RelatedProductsWidget extends StatelessWidget {
                     padding: const EdgeInsets.only(right: 16.0),
                     child:   GestureDetector(
                       onTap: (){
-                        Navigator.push(context, MaterialPageRoute(builder: (context)=> ProductPage(product: relatedProduct)));
+                        List<String> productIds = [];
+                        productIds.add(relatedProduct.id);
+                        Navigator.push(context, MaterialPageRoute(builder: (context)=> ProductPage(productId: productIds)));
                       },
                       child: RelatedProductCardWidget(relatedProduct: relatedProduct,),
                     ));
