@@ -1,4 +1,3 @@
-import 'package:flutter/foundation.dart';
 import 'package:shopify_flutter/models/models.dart';
 
 class ProductModel {
