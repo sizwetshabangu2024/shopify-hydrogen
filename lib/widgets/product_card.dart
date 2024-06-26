@@ -11,7 +11,7 @@ class SingleProductCardWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final shopifyProvider = Provider.of<ShopifyProvider>(context, listen: false);
+    final shopifyProvider = Provider.of<ShopifyProvider>(context);
     return Card(
       elevation: 5,
       shape: RoundedRectangleBorder(
@@ -80,7 +80,7 @@ class SingleProductCardWidget extends StatelessWidget {
                 height: 50,
                 child: ElevatedButton(
                   onPressed: () {
-                    shopifyProvider.addToCart(product as ProductModel);
+                    shopifyProvider.addToCart(ProductModel.fromProduct(product));
                   },
                   style: ElevatedButton.styleFrom(
                     backgroundColor: Colors.black,

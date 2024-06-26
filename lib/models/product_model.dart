@@ -1,3 +1,6 @@
+import 'package:flutter/foundation.dart';
+import 'package:shopify_flutter/models/models.dart';
+
 class ProductModel {
   final String id;
   final String title;
@@ -41,6 +44,18 @@ class ProductModel {
       currencyCode: currencyCode,
       imageUrl: imageUrl,
       variantId: variantId,
+    );
+  }
+
+  factory ProductModel.fromProduct(Product product) {
+    return ProductModel(
+        id: product.id,
+        title: product.title,
+        description: product.description ?? '',
+        price: product.price,
+        currencyCode: product.currencyCode,
+        imageUrl: product.image,
+        variantId: product.productVariants.first.id
     );
   }
 }
