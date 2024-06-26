@@ -51,6 +51,7 @@ class MainPageState extends State<MainPage> {
               items: <BottomNavigationBarItem>[
                 const BottomNavigationBarItem(
                   icon: Icon(Icons.shopping_bag),
+                  backgroundColor: Colors.black,
                   label: 'Products',
                 ),
                 const BottomNavigationBarItem(

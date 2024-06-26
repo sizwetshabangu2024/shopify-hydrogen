@@ -47,7 +47,7 @@ class HomeScreen extends StatelessWidget {
                         onTap: (){
                           List<String> productIds = [];
                           productIds.add(product.id);
-                          Navigator.push(context, MaterialPageRoute(builder: (context)=> ProductPage(productId: productIds)));
+                          Navigator.push(context, MaterialPageRoute(builder: (context)=> ProductPage(productId: productIds, productTitle: product.title,)));
                         },
                         subtitle: Text('${product.currencyCode} ${product.price.toStringAsFixed(2)}'),
                         leading: product.imageUrl.isNotEmpty

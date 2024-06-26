@@ -5,9 +5,10 @@ import 'package:shopify_hydrogen/widgets/product_card.dart';
 import 'package:shopify_hydrogen/widgets/related_products_scrollview.dart';
 
 class ProductPage extends StatelessWidget {
-  const ProductPage({super.key, required this.productId});
+  const ProductPage({super.key, required this.productId, required this.productTitle});
 
   final List<String> productId;
+  final String productTitle;
 
   Future<List<Product>?> fetchProducts() {
     return ShopifyStore.instance.getProductsByIds(productId);
@@ -20,7 +21,7 @@ class ProductPage extends StatelessWidget {
         iconTheme: const IconThemeData(
           color: Colors.white
         ),
-        title: Text('Element'),
+        title: Text(productTitle),
         titleTextStyle: const TextStyle(
           color: Colors.white
         ),

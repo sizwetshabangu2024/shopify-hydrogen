@@ -10,7 +10,7 @@ void main() {
       storeUrl: "quickstart-b7d1dbcd.myshopify.com",
       storefrontApiVersion: "2023-07",
     language: 'en',
-    cachePolicy: CachePolicy.cacheAndNetwork, //TODO: THINK ABOUT OFFLINE ACCESS
+    cachePolicy: CachePolicy.cacheFirst,
   );
 
   runApp(const MyApp());

@@ -58,7 +58,7 @@ class RelatedProductsWidget extends StatelessWidget {
                       onTap: (){
                         List<String> productIds = [];
                         productIds.add(relatedProduct.id);
-                        Navigator.push(context, MaterialPageRoute(builder: (context)=> ProductPage(productId: productIds)));
+                        Navigator.push(context, MaterialPageRoute(builder: (context)=> ProductPage(productId: productIds, productTitle: relatedProduct.title,)));
                       },
                       child: RelatedProductCardWidget(relatedProduct: relatedProduct,),
                     ));
