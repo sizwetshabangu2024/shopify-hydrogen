@@ -13,7 +13,7 @@ void main() {
       storeUrl: "quickstart-b7d1dbcd.myshopify.com",
       storefrontApiVersion: "2023-07",
     language: 'en',
-    cachePolicy: CachePolicy.cacheAndNetwork,
+    cachePolicy: CachePolicy.cacheAndNetwork, //TODO: THINK ABOUT OFFLINE ACCESS
   );
 
   runApp(const MyApp());
@@ -32,11 +32,11 @@ class MyApp extends StatelessWidget {
         theme: ThemeData(
           primarySwatch: Colors.blue,
         ),
-        home: const HomeScreen(),
+        home: HomeScreen(),
         routes: {
-          '/cart': (context) => const CartScreen(),
+          '/cart': (context) => CartScreen(),
           '/success': (context) => const SuccessScreen(),
-          '/order-confirmation': (context) => const OrderConfirmationScreen(),
+          '/order-confirmation': (context) => OrderConfirmationScreen(),
         },
       ),
     );
