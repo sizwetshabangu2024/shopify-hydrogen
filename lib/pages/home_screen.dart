@@ -14,33 +14,7 @@ class HomeScreen extends StatelessWidget {
 
     return Scaffold(
       appBar: AppBar(
-        title: Row(
-          children: [
-            const Text('Dariel Swag Shop'),
-            Expanded(child: Container()), // to push the cart button to the center if needed
-            Consumer<ShopifyProvider>(
-              builder: (ctx, shopifyProvider, _) {
-                if (shopifyProvider.cart.isNotEmpty) {
-                  return Row(
-                    mainAxisSize: MainAxisSize.min,
-                    children: [
-                      TextButton.icon(
-                        icon: const Icon(Icons.shopping_cart),
-                        label: const Text('Go to cart'),
-                        onPressed: () {
-                          Navigator.pushNamed(context, '/cart');
-                        },
-                      ),
-                    ],
-                  );
-                } else {
-                  return Container(); // an empty container if the cart is empty
-                }
-              },
-            ),
-            Expanded(child: Container()), // to balance the Row
-          ],
-        ),
+        title: const Text('Dariel Swag Shop')
       ),
       body: FutureBuilder(
         future: shopifyProvider.fetchAllProducts(),
@@ -105,6 +79,7 @@ class HomeScreen extends StatelessWidget {
                             IconButton(
                               icon: const Icon(Icons.add),
                               onPressed: () {
+
                                 shopifyProvider.addToCart(product);
                               },
                             ),
