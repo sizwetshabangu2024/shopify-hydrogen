@@ -18,8 +18,7 @@ class CartScreenState extends State<CartScreen> {
   Widget build(BuildContext context) {
     final shopifyProvider = Provider.of<ShopifyProvider>(context);
     final cartItems = shopifyProvider.cart;
-    final totalAmount = cartItems.fold(0.0, (sum, item) => sum + (item.product.price * item.quantity),
-    );
+    final totalAmount = cartItems.fold(0.0, (sum, item) => sum + (item.product.price * item.quantity));
 
     return Scaffold(
       appBar: AppBar(
@@ -47,22 +46,15 @@ class CartScreenState extends State<CartScreen> {
                 final cartItem = cartItems[i];
                 final itemTotal = cartItem.product.price * cartItem.quantity;
                 return Card(
-                  margin: const EdgeInsets.symmetric(
-                      vertical: 10, horizontal: 15),
+                  margin: const EdgeInsets.symmetric(vertical: 10, horizontal: 15),
                   child: ListTile(
-                    leading: cartItem.product.imageUrl.isNotEmpty
-                        ? Image.network(cartItem.product.imageUrl)
-                        : null,
+                    leading: cartItem.product.imageUrl.isNotEmpty ? Image.network(cartItem.product.imageUrl) : null,
                     title: Text(cartItem.product.title),
                     subtitle: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
-                        Text(
-                          '${cartItem.product.currencyCode} ${cartItem.product.price.toStringAsFixed(2)} each',
-                        ),
-                        Text(
-                          'Item Total: ${cartItem.product.currencyCode} ${itemTotal.toStringAsFixed(2)}',
-                        ),
+                        Text('${cartItem.product.currencyCode} ${cartItem.product.price.toStringAsFixed(2)} each'),
+                        Text('Item Total: ${cartItem.product.currencyCode} ${itemTotal.toStringAsFixed(2)}'),
                       ],
                     ),
                     trailing: Row(
@@ -72,20 +64,16 @@ class CartScreenState extends State<CartScreen> {
                           IconButton(
                             icon: const Icon(Icons.delete),
                             onPressed: () {
-                              shopifyProvider.removeFromCart(
-                                  cartItem.product.id);
+                              shopifyProvider.removeFromCart(cartItem.product.id);
                             },
                           ),
                         IconButton(
                           icon: const Icon(Icons.remove),
                           onPressed: () {
                             if (cartItem.quantity > 1) {
-                              shopifyProvider.updateQuantity(
-                                  cartItem.product.id,
-                                  cartItem.quantity - 1);
+                              shopifyProvider.updateQuantity(cartItem.product.id, cartItem.quantity - 1);
                             } else {
-                              shopifyProvider.removeFromCart(
-                                  cartItem.product.id);
+                              shopifyProvider.removeFromCart(cartItem.product.id);
                             }
                           },
                         ),
@@ -93,8 +81,7 @@ class CartScreenState extends State<CartScreen> {
                         IconButton(
                           icon: const Icon(Icons.add),
                           onPressed: () {
-                            shopifyProvider.addToCart(
-                                cartItem.product);
+                            shopifyProvider.addToCart(cartItem.product);
                           },
                         ),
                       ],
@@ -115,8 +102,7 @@ class CartScreenState extends State<CartScreen> {
                     context: context,
                     builder: (ctx) => AlertDialog(
                       title: const Text('Confirm'),
-                      content: const Text(
-                          'Do you really want to remove all items from the cart?'),
+                      content: const Text('Do you really want to remove all items from the cart?'),
                       actions: [
                         TextButton(
                           onPressed: () {
@@ -146,13 +132,10 @@ class CartScreenState extends State<CartScreen> {
               children: [
                 const Text(
                   'Total:',
-                  style: TextStyle(
-                      fontSize: 20, fontWeight: FontWeight.bold),
+                  style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
                 ),
-                Text(
-                  '${cartItems.isNotEmpty ? cartItems[0].product.currencyCode : ''} ${totalAmount.toStringAsFixed(2)}',
-                  style: const TextStyle(
-                      fontSize: 20, fontWeight: FontWeight.bold),
+                Text('${cartItems.isNotEmpty ? cartItems[0].product.currencyCode : ''} ${totalAmount.toStringAsFixed(2)}',
+                  style: const TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
                 ),
               ],
             ),
@@ -171,21 +154,19 @@ class CartScreenState extends State<CartScreen> {
                     gravity: ToastGravity.BOTTOM,
                     timeInSecForIosWeb: 1,
                   );
-                  final checkoutUrl =
-                  await shopifyProvider.createOrder();
+                  final checkoutUrl = await shopifyProvider.createOrder();
                   if (checkoutUrl != null) {
-                    Future.delayed(const Duration(seconds: 3), () {
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                        builder: (context) => CheckoutWebviewScreen(
+                          checkoutUrl: checkoutUrl,
+                        ),
+                      ),
+                    ).then((_) {
                       setState(() {
                         _isLoading = false;
                       });
-                      Navigator.push(
-                        context,
-                        MaterialPageRoute(
-                          builder: (context) => CheckoutWebviewScreen(
-                            checkoutUrl: checkoutUrl,
-                          ),
-                        ),
-                      );
                     });
                   } else {
                     setState(() {
